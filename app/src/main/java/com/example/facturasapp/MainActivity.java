@@ -12,7 +12,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements Callback<List<FacturaVO>> {
+public class MainActivity extends AppCompatActivity implements Callback<FacturaResult> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,19 +20,19 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Fac
         setContentView(R.layout.activity_main);
 
 
-        Call<List<FacturaVO>> call = FacturaAdapter.getService().getList();
+        Call<FacturaResult> call = FacturaAdapter.getService().getList();
         call.enqueue(this);
     }
 
     @Override
-    public void onResponse(Call<List<FacturaVO>> call, Response<List<FacturaVO>> response) {
+    public void onResponse(Call<FacturaResult> call, Response<FacturaResult> response) {
         if (response.isSuccessful()) {
-            List<FacturaVO> facturas = response.body();
+            Log.d("prueba", response.body().getFacturas().toString());
         }
     }
 
     @Override
-    public void onFailure(Call<List<FacturaVO>> call, Throwable t) {
+    public void onFailure(Call<FacturaResult> call, Throwable t) {
 
     }
 }

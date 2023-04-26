@@ -1,5 +1,6 @@
 package com.example.facturasapp.network;
 
+import com.example.facturasapp.FacturaResult;
 import com.example.facturasapp.FacturaVO;
 
 import java.util.List;
@@ -11,5 +12,5 @@ import retrofit2.http.GET;
 public interface FacturaService {
 
     @GET("facturas")
-    Call<List<FacturaVO>> getList();
+    Call<FacturaResult> getList();
 }
