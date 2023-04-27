@@ -1,9 +1,12 @@
-package com.example.facturasapp;
+package com.example.facturasapp.model;
+
+import com.example.facturasapp.model.FacturaVO;
 
 import java.util.List;
 
 public class FacturaResult {
 
+    //Declaracion de la lista de facturas (JSON)
     private String numFacturas;
     private List<FacturaVO> facturas;
 

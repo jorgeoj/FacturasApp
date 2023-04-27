@@ -1,4 +1,4 @@
-package com.example.facturasapp;
+package com.example.facturasapp.data.adapters;
 
 import com.example.facturasapp.network.FacturaService;
 
@@ -7,8 +7,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class FacturaAdapter {
-
+public class APIAdapter {
+    //Se hace la llamada a internet y coge los datos
     private static FacturaService service;
 
     public static FacturaService getService() {

@@ -1,12 +1,12 @@
-package com.example.facturasapp;
+package com.example.facturasapp.model;
 
 public class FacturaVO {
 
     private String descEstado;
-    private String importeOrdenacion;
+    private Double importeOrdenacion;
     private String fecha;
 
-    public FacturaVO(String descEstado, String importeOrdenacion, String fecha){
+    public FacturaVO(String descEstado, Double importeOrdenacion, String fecha){
         this.descEstado = descEstado;
         this.importeOrdenacion = importeOrdenacion;
         this.fecha = fecha;
@@ -16,7 +16,7 @@ public class FacturaVO {
         return descEstado;
     }
 
-    public String getImporteOrdenacion(){
+    public Double getImporteOrdenacion(){
         return importeOrdenacion;
     }
 

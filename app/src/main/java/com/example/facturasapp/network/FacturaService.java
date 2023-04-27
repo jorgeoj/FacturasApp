@@ -1,9 +1,6 @@
 package com.example.facturasapp.network;
 
-import com.example.facturasapp.FacturaResult;
-import com.example.facturasapp.FacturaVO;
-
-import java.util.List;
+import com.example.facturasapp.model.FacturaResult;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
