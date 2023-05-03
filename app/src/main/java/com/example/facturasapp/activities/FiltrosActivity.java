@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.facturasapp.R;
@@ -85,6 +86,34 @@ public class FiltrosActivity extends AppCompatActivity {
                 DatePickerDialog dpd = new DatePickerDialog(FiltrosActivity.this, (view1, year1, monthofyear, dayofmonth) ->
                         botonFechaHasta.setText(dayofmonth + "/" + (monthofyear+1) + "/" + year1), year, month, day);
                 dpd.show();
+            }
+        });
+
+        //Seekbar y textos de la seekbar, inicializar y onClick
+        SeekBar seekBar = findViewById(R.id.seekBar);
+        TextView tvMaxSeekBar = (TextView) findViewById(R.id.tvMaxSeekbar);
+        TextView tvValorImporte = (TextView) findViewById(R.id.tvValorImporte);
+
+        //int maxImporte = MainActivity.maxImporte.intValue()+1;
+        //seekBar.setMax(maxImporte);
+        //seekBar.setProgress(maxImporte);
+        //tvMaxSeekBar.setText(String.valueOf(maxImporte));
+        //tvValorImporte.setText(String.valueOf(maxImporte));
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                tvValorImporte.setText(String.valueOf(i));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
 
