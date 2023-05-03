@@ -22,7 +22,7 @@ public class APIAdapter {
 
         if (service == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://viewnextandroid.wiremockapi.cloud/")
+                    .baseUrl("https://viewnextandroid.mocklab.io/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(httpClient.build()) // <-- set log level
                     .build();
