@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.facturasapp.R;
+import com.example.facturasapp.data.constantes.Constantes;
 import com.example.facturasapp.model.FacturaVO;
 
 import java.util.List;
@@ -42,14 +43,14 @@ public class FacturasAdapter extends RecyclerView.Adapter<FacturasAdapter.ViewHo
     //Poner el texto adecuado de las facturas
     @Override
     public void onBindViewHolder(@NonNull FacturasAdapter.ViewHolder holder, int position) {
-        holder.tvImporteOrdenacion.setText(String.valueOf(listaFacturas.get(position).getImporteOrdenacion()) + " €");
+        holder.tvImporteOrdenacion.setText(String.valueOf(listaFacturas.get(position).getImporteOrdenacion()) + Constantes.MONEDA);
         holder.tvFecha.setText((listaFacturas.get(position).getFecha()));
         holder.tvDescEstado.setText(listaFacturas.get(position).getDescEstado());
         //Cambiar el color del textview según el estado
         //si el estado no es pendiente o pagada, se pondra el texto en negro
-        if(listaFacturas.get(position).getDescEstado().equals("Pendiente de pago")){
+        if(listaFacturas.get(position).getDescEstado().equals(Constantes.ESTADO_PENDIENTE)){
             holder.tvDescEstado.setTextColor(Color.RED);
-        }else if(listaFacturas.get(position).getDescEstado().equals("Pagada")){
+        }else if(listaFacturas.get(position).getDescEstado().equals(Constantes.ESTADO_PAGADO)){
             //El oxFF es como la almohadilla y el resto es el codigo del color
             //Ell color es es verde
             holder.tvDescEstado.setTextColor(0xFF8BC34A);
@@ -83,7 +84,7 @@ public class FacturasAdapter extends RecyclerView.Adapter<FacturasAdapter.ViewHo
                     mDialog.setContentView(R.layout.layout_popup);
                     mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     TextView mensajePopup = mDialog.findViewById(R.id.mensajePopup);
-                    mensajePopup.setText("Esta funcionalidad aún no está disponible");
+                    mensajePopup.setText(R.string.layout_popup_text);
                     mDialog.show();
 
                     //cierra el popup al darle al boton

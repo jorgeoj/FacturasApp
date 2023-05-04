@@ -36,7 +36,7 @@ public class FiltrosActivity extends AppCompatActivity {
         FiltrosActivity.this.setSupportActionBar(toolbar);
 
         //Cambiar toolbar titulo
-        FiltrosActivity.this.setTitle("Filtrar facturas");
+        FiltrosActivity.this.setTitle(R.string.activity_filtros_main_title_toolbar);
 
         //Boton para salir a la actividad de filtros
         MenuHost menu = this;
@@ -49,13 +49,13 @@ public class FiltrosActivity extends AppCompatActivity {
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
-                    case R.id.vuelta:
-                        Intent intent = new Intent(FiltrosActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        return true;
-                }
-                return false;
+                 if(menuItem.getItemId() == R.id.vuelta){
+                     Intent intent = new Intent(FiltrosActivity.this, MainActivity.class);
+                     startActivity(intent);
+                     return true;
+                 }else{
+                     return false;
+                 }
             }
         });
 

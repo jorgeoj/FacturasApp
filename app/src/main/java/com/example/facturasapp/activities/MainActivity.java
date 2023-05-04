@@ -20,16 +20,22 @@ import com.example.facturasapp.data.adapters.APIAdapter;
 import com.example.facturasapp.model.FacturaResult;
 import com.example.facturasapp.data.adapters.FacturasAdapter;
 import com.example.facturasapp.R;
+import com.example.facturasapp.model.FacturaVO;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements Callback<FacturaResult> {
+public class MainActivity extends AppCompatActivity {
 
     private FacturasAdapter adapter;
     private RecyclerView rv1;
     private Toolbar toolbar;
+
+    private ArrayList<FacturaVO> listaFacturas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +46,8 @@ public class MainActivity extends AppCompatActivity implements Callback<FacturaR
         toolbar = findViewById(R.id.toolbarPractica);
         MainActivity.this.setSupportActionBar(toolbar);
 
-        //Cambiar toolbar titulo
-        MainActivity.this.setTitle("Facturas");
+        //Cambiar toolbar titulo, el titulo está en los strings
+        MainActivity.this.setTitle(R.string.activity_main_title_toolbar);
 
         //Boton para ir a la actividad de filtros
         MenuHost menu = this;
@@ -53,34 +59,46 @@ public class MainActivity extends AppCompatActivity implements Callback<FacturaR
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
-                    case R.id.ida:
-                        Intent intent = new Intent(MainActivity.this, FiltrosActivity.class);
-                        startActivity(intent);
-                        return true;
+                if (menuItem.getItemId() == R.id.ida) {
+                    Intent intent = new Intent(MainActivity.this, FiltrosActivity.class);
+                    startActivity(intent);
+                    return true;
+                } else {
+                    return false;
                 }
-                return false;
             }
         });
 
+        peticionFacturas();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    public void peticionFacturas() {
         Call<FacturaResult> call = APIAdapter.getService().getList();
-        call.enqueue(this);
+        call.enqueue(new Callback<FacturaResult>() {
+            @Override
+            public void onResponse(Call<FacturaResult> call, Response<FacturaResult> response) {
+                if (response.isSuccessful()) {
+                    //El texto de abajo sale en el logcat
+                    Log.d("facturas cargadas", response.body().getFacturas().toString());
+                    // Obtener la lista de facturas
+                    listaFacturas = response.body().getFacturas();
+                    //Vinculamos el recyclerView con la lista
+                    adapter = new FacturasAdapter(listaFacturas);
+                    rv1.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FacturaResult> call, Throwable t) {
+                // No op. Método de la implementación de CallBack
+                Log.d("onFailure", "Fallo callback de enqueue");
+            }
+        });
     }
-
-    @Override
-    public void onResponse(Call<FacturaResult> call, Response<FacturaResult> response) {
-        if (response.isSuccessful()) {
-            Log.d("prueba", response.body().getFacturas().toString());
-            //Vinculamos el recyclerView con la lista
-            adapter = new FacturasAdapter(response.body().getFacturas());
-            rv1.setAdapter(adapter);
-        }
-    }
-
-    @Override
-    public void onFailure(Call<FacturaResult> call, Throwable t) {
-
-    }
-
-
 }

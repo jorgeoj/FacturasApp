@@ -45,7 +45,7 @@
                 android:layout_marginEnd="300dp"
                 android:layout_marginBottom="480dp"
                 android:backgroundTint="@color/lighter_grey"
-                android:text="día/mes/año"
+                android:text="@string/activity_filtros_button_date"
                 android:textAllCaps="false"
                 android:textColor="@color/light_black"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -62,7 +62,7 @@
                 android:layout_marginEnd="140dp"
                 android:layout_marginBottom="480dp"
                 android:backgroundTint="@color/lighter_grey"
-                android:text="día/mes/año"
+                android:text="@string/activity_filtros_button_date"
                 android:textAllCaps="false"
                 android:textColor="@color/light_black"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
-                android:text="Desde:"
+                android:text="@string/activity_filtros_textview_from"
                 app:layout_constraintBottom_toTopOf="@+id/fechaDesde"
                 app:layout_constraintStart_toStartOf="@+id/fechaDesde"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -85,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
-                android:text="Hasta:"
+                android:text="@string/activity_filtros_textview_to"
                 app:layout_constraintBottom_toTopOf="@+id/fechaHasta"
                 app:layout_constraintStart_toStartOf="@+id/fechaHasta"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -94,7 +94,7 @@
                 android:id="@+id/tvFechaEmision"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Con fecha de emisión"
+                android:text="@string/activity_filtros_textview_title_date"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -125,7 +125,7 @@
                 android:id="@+id/tvMinSeekbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text="@string/activity_filtros_textview_seekbar_minValue"
                 app:layout_constraintBottom_toTopOf="@+id/seekBar"
                 app:layout_constraintStart_toStartOf="@+id/seekBar" />
 
@@ -141,7 +141,7 @@
                 android:id="@+id/tvImporteTitulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Por un importe"
+                android:text="@string/activity_filtros_textview_title_seekbar"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/tvMinSeekbar"
@@ -175,7 +175,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="325dp"
-                android:text="Por estado"
+                android:text="@string/activity_filtros_textview_title_checkbox"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -187,7 +187,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
-                android:text="Pagadas"
+                android:text="@string/activity_filtros_checkbox_pagadas"
                 app:layout_constraintStart_toStartOf="@+id/tvEstadoTitulo"
                 app:layout_constraintTop_toBottomOf="@+id/tvEstadoTitulo" />
 
@@ -196,7 +196,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="Anuladas"
+                android:text="@string/activity_filtros_checkbox_anuladas"
                 app:layout_constraintStart_toStartOf="@+id/cbPagadas"
                 app:layout_constraintTop_toBottomOf="@+id/cbPagadas" />
 
@@ -205,7 +205,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Cuota Fija"
+                android:text="@string/activity_filtros_checkbox_cuota_fija"
                 app:layout_constraintStart_toStartOf="@+id/cbAnuladas"
                 app:layout_constraintTop_toBottomOf="@+id/cbAnuladas" />
 
@@ -214,7 +214,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Pendientes de pago"
+                android:text="@string/activity_filtros_checkbox_pendientes_pago"
                 app:layout_constraintStart_toStartOf="@+id/cbCuotaFija"
                 app:layout_constraintTop_toBottomOf="@+id/cbCuotaFija" />
 
@@ -223,7 +223,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Plan de pago"
+                android:text="@string/activity_filtros_checkbox_plan_pago"
                 app:layout_constraintStart_toStartOf="@+id/cbPendientesPago"
                 app:layout_constraintTop_toBottomOf="@+id/cbPendientesPago" />
 
@@ -238,7 +238,7 @@
         android:layout_marginStart="48dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="8dp"
-        android:text="Aplicar filtros"
+        android:text="@string/activity_filtros_button_apply_filters"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/buttonEliminarFiltros"
@@ -251,7 +251,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Borrar filtros"
+        android:text="@string/activity_filtros_button_delete_filters"
         android:textAllCaps="false"
         android:textColor="@color/green"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">FacturasApp</string>
+    <!-- Strings de la main activity -->
+    <string name="activity_main_title_toolbar">Facturas</string>
+
+    <!-- Strings del popup -->
+    <string name="layout_popup_main_title">Información</string>
+    <string name="layout_popup_text">Esta funcionalidad aún no está disponible</string>
+    <string name="layout_popup_button_close">CERRAR</string>
+
+    <!-- Strings de los filtros -->
+    <string name="activity_filtros_main_title_toolbar">Filtrar facturas</string>
+    <string name="activity_filtros_button_date">día/mes/año</string>
+    <string name="activity_filtros_textview_from">Desde:</string>
+    <string name="activity_filtros_textview_to">Hasta:</string>
+    <string name="activity_filtros_textview_title_date">Con fecha de emisión</string>
+    <string name="activity_filtros_textview_seekbar_minValue">0</string>
+    <string name="activity_filtros_textview_title_seekbar">Por un importe</string>
+    <string name="activity_filtros_textview_title_checkbox">Por estado</string>
+    <string name="activity_filtros_checkbox_pagadas">Pagadas</string>
+    <string name="activity_filtros_checkbox_anuladas">Anuladas</string>
+    <string name="activity_filtros_checkbox_cuota_fija">Cuota Fija</string>
+    <string name="activity_filtros_checkbox_pendientes_pago">Pendientes de pago</string>
+    <string name="activity_filtros_checkbox_plan_pago">Plan de pago</string>
+    <string name="activity_filtros_button_apply_filters">Aplicar filtros</string>
+    <string name="activity_filtros_button_delete_filters">Borrar filtros</string>
 </resources>
