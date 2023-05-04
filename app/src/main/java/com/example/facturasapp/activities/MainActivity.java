@@ -60,8 +60,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.ida) {
-                    Intent intent = new Intent(MainActivity.this, FiltrosActivity.class);
-                    startActivity(intent);
+                    cambiarActividad();
                     return true;
                 } else {
                     return false;
@@ -72,10 +71,16 @@ public class MainActivity extends AppCompatActivity {
         peticionFacturas();
     }
 
-    @Override
+    /*@Override
     protected void onResume() {
         super.onResume();
+        listaFacturas;
+    }*/
 
+    public void cambiarActividad() {
+        Intent intent = new Intent(MainActivity.this, FiltrosActivity.class);
+        intent.putExtra("facturas", listaFacturas);
+        startActivity(intent);
     }
 
     public void peticionFacturas() {

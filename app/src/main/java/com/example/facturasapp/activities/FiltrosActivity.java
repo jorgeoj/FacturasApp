@@ -9,6 +9,7 @@ import androidx.core.view.MenuProvider;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,12 +21,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.facturasapp.R;
+import com.example.facturasapp.model.FacturaVO;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class FiltrosActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
+    private ArrayList<FacturaVO> listaFactura;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +62,9 @@ public class FiltrosActivity extends AppCompatActivity {
                  }
             }
         });
+
+        listaFactura = getIntent().getParcelableArrayListExtra("facturas");
+        Log.d("tamaño facturas", "" + listaFactura.size());
 
         //Boton para fecha desde, inicializar y al hacer click salga el calendario
         Button botonFechaDesde = findViewById(R.id.fechaDesde);
