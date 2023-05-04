@@ -71,11 +71,10 @@ public class MainActivity extends AppCompatActivity {
         peticionFacturas();
     }
 
-    /*@Override
+    @Override
     protected void onResume() {
         super.onResume();
-        listaFacturas;
-    }*/
+    }
 
     public void cambiarActividad() {
         Intent intent = new Intent(MainActivity.this, FiltrosActivity.class);

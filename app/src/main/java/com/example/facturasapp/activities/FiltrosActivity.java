@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.facturasapp.R;
 import com.example.facturasapp.model.FacturaVO;
@@ -29,42 +28,20 @@ import java.util.Calendar;
 public class FiltrosActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private ArrayList<FacturaVO> listaFactura;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtros);
 
-        //Toolbar en blanco
-        toolbar = findViewById(R.id.toolbarPracticaFiltros);
-        FiltrosActivity.this.setSupportActionBar(toolbar);
+        //Al pasar de una actividad a otra cargamos la lista aqui y la metemos en una variable
+        ArrayList<FacturaVO> listaFactura = cargarListaFacturas();
 
-        //Cambiar toolbar titulo
-        FiltrosActivity.this.setTitle(R.string.activity_filtros_main_title_toolbar);
+        //Metodo para cargar toolbar en blanco
+        establecerToolbar();
 
-        //Boton para salir a la actividad de filtros
-        MenuHost menu = this;
+        //Funcionalidades del menu de la toolbar
+        establecerMenuToolbar();
 
-        menu.addMenuProvider(new MenuProvider() {
-            @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menuInflater.inflate(R.menu.vuelta_main_app, menu);
-            }
-
-            @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                 if(menuItem.getItemId() == R.id.vuelta){
-                     Intent intent = new Intent(FiltrosActivity.this, MainActivity.class);
-                     startActivity(intent);
-                     return true;
-                 }else{
-                     return false;
-                 }
-            }
-        });
-
-        listaFactura = getIntent().getParcelableArrayListExtra("facturas");
-        Log.d("tamaño facturas", "" + listaFactura.size());
 
         //Boton para fecha desde, inicializar y al hacer click salga el calendario
         Button botonFechaDesde = findViewById(R.id.fechaDesde);
@@ -96,16 +73,19 @@ public class FiltrosActivity extends AppCompatActivity {
             }
         });
 
-        //Seekbar y textos de la seekbar, inicializar y onClick
-        SeekBar seekBar = findViewById(R.id.seekBar);
-        TextView tvMaxSeekBar = (TextView) findViewById(R.id.tvMaxSeekbar);
-        TextView tvValorImporte = (TextView) findViewById(R.id.tvValorImporte);
 
-        //int maxImporte = MainActivity.maxImporte.intValue()+1;
+
+        int maxImporte = calcularMaximoImporte(listaFactura);
         //seekBar.setMax(maxImporte);
         //seekBar.setProgress(maxImporte);
         //tvMaxSeekBar.setText(String.valueOf(maxImporte));
         //tvValorImporte.setText(String.valueOf(maxImporte));
+
+        // TODO pintarMaxSeekbar(maxImporte);
+        //Seekbar y textos de la seekbar, inicializar y onClick
+        SeekBar seekBar = findViewById(R.id.seekBar);
+        TextView tvMaxSeekBar = (TextView) findViewById(R.id.tvMaxSeekbar);
+        TextView tvValorImporte = (TextView) findViewById(R.id.tvValorImporte);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -156,6 +136,63 @@ public class FiltrosActivity extends AppCompatActivity {
             }
         });
 
+        // TODO devolverFacturasFiltradas() o devolverFiltroAplicado();
+
+    }
+
+
+
+
+    //Al pasar de una actividad a otra cargamos la lista aqui y la metemos en una variable
+    private ArrayList<FacturaVO> cargarListaFacturas() {
+        ArrayList<FacturaVO> listaFactura = getIntent().getParcelableArrayListExtra("facturas");
+        Log.d("tamaño facturas", "" + listaFactura.size());
+
+        return listaFactura;
+    }
+
+    //Cambiamos el color y el titulo de la toolbar
+    private void establecerToolbar() {
+        //Toolbar en blanco
+        toolbar = findViewById(R.id.toolbarPracticaFiltros);
+        FiltrosActivity.this.setSupportActionBar(toolbar);
+
+        //Cambiar toolbar titulo
+        FiltrosActivity.this.setTitle(R.string.activity_filtros_main_title_toolbar);
+    }
+
+    //Hacemos el menú de la toolbar y la vuelta a la otra actividad
+    private void establecerMenuToolbar() {
+        //Boton para salir a la actividad de filtros
+        MenuHost menu = this;
+
+        menu.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.vuelta_main_app, menu);
+            }
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if(menuItem.getItemId() == R.id.vuelta){
+                    Intent intent = new Intent(FiltrosActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        });
+    }
+    private int calcularMaximoImporte(ArrayList<FacturaVO> listaFactura) {
+        int maxImporte = 0;
+
+        for (FacturaVO factura : listaFactura) {
+            double maxFactura = factura.getImporteOrdenacion();
+            if (maxImporte < maxFactura) {
+                maxImporte = (int) Math.ceil(maxFactura);
+            }
+        }
+        return maxImporte;
     }
 
 }
