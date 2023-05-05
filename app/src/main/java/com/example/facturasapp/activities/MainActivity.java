@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
                     rv1.setAdapter(adapter);
                 }
             }
-
             @Override
             public void onFailure(Call<FacturaResult> call, Throwable t) {
                 // No op. Método de la implementación de CallBack

@@ -1,92 +1,55 @@
 package com.example.facturasapp.model;
 
 import java.util.Date;
+import java.util.HashMap;
 
 public class FiltrosVO {
     //Creamos estas variables para los botones de las fechas
-    private Date fechaInicio;
-    private Date fechaFin;
+    private String fechaInicio;
+    private String fechaFin;
     //Esta variable para la seekbar
-    private double importe;
-    //Botones
-    private boolean pagadas;
-    private boolean anuladas;
-    private boolean cuotaFija;
-    private boolean pendientesPago;
-    private boolean planPago;
+    private int maxImporte;
+    //Este mapa para los valores de las checkbox
+    private HashMap<String, Boolean> estadoCB = new HashMap<>();
 
-    public FiltrosVO(Date fechaInicio, Date fechaFin, double importe, boolean pagadas, boolean anuladas, boolean cuotaFija, boolean pendientesPago, boolean planPago) {
+    public FiltrosVO(String fechaInicio, String fechaFin, int maxImporte, HashMap<String, Boolean> estadoCB) {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
-        this.importe = importe;
-        this.pagadas = pagadas;
-        this.anuladas = anuladas;
-        this.cuotaFija = cuotaFija;
-        this.pendientesPago = pendientesPago;
-        this.planPago = planPago;
+        this.maxImporte = maxImporte;
+        this.estadoCB = estadoCB;
     }
 
-    public Date getFechaInicio() {
+    public String getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(String fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public Date getFechaFin() {
+    public String getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(Date fechaFin) {
+    public void setFechaFin(String fechaFin) {
         this.fechaFin = fechaFin;
     }
 
-    public double getImporte() {
-        return importe;
+    public int getMaxImporte() {
+        return maxImporte;
     }
 
-    public void setImporte(double importe) {
-        this.importe = importe;
+    public void setMaxImporte(int maxImporte) {
+        this.maxImporte = maxImporte;
     }
 
-    public boolean isPagadas() {
-        return pagadas;
+    public HashMap<String, Boolean> getEstadoCB() {
+        return estadoCB;
     }
 
-    public void setPagadas(boolean pagadas) {
-        this.pagadas = pagadas;
-    }
-
-    public boolean isAnuladas() {
-        return anuladas;
-    }
-
-    public void setAnuladas(boolean anuladas) {
-        this.anuladas = anuladas;
-    }
-
-    public boolean isCuotaFija() {
-        return cuotaFija;
-    }
-
-    public void setCuotaFija(boolean cuotaFija) {
-        this.cuotaFija = cuotaFija;
-    }
-
-    public boolean isPendientesPago() {
-        return pendientesPago;
-    }
-
-    public void setPendientesPago(boolean pendientesPago) {
-        this.pendientesPago = pendientesPago;
-    }
-
-    public boolean isPlanPago() {
-        return planPago;
-    }
-
-    public void setPlanPago(boolean planPago) {
-        this.planPago = planPago;
+    public void setEstadoCB(HashMap<String, Boolean> estadoCB) {
+        this.estadoCB = estadoCB;
     }
 }
+
+

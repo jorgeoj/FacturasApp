@@ -20,10 +20,14 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.example.facturasapp.R;
+import com.example.facturasapp.data.constantes.Constantes;
 import com.example.facturasapp.model.FacturaVO;
+import com.example.facturasapp.model.FiltrosVO;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class FiltrosActivity extends AppCompatActivity {
 
@@ -44,7 +48,8 @@ public class FiltrosActivity extends AppCompatActivity {
 
 
         //Botones para la fecha -->
-        establecerFechas();
+        String fechaInicio = obtenerFechaInicio();
+        String fechaFinal = obtenerFechaFinal();
 
 
         //Seekbar -->
@@ -55,17 +60,33 @@ public class FiltrosActivity extends AppCompatActivity {
         //Y controlamos el movimiento en este metodo
         pintarMaxSeekbar(maxImporte);
 
-        //Checkboxes -->
-        // TODO checkbox tienen que devolver algo para filtrar o como?
+        //Checkbox -->
+        //Inicializamos las checkbox
+        CheckBox cbPagadas = findViewById(R.id.cbPagadas);
+        CheckBox cbAnuladas = findViewById(R.id.cbAnuladas);
+        CheckBox cbCuotaFija = findViewById(R.id.cbCuotaFija);
+        CheckBox cbPendientesPago = findViewById(R.id.cbPendientesPago);
+        CheckBox cbPlanPago = findViewById(R.id.cbPlanPago);
 
-
-
+        // TODO devolverFacturasFiltradas() o devolverFiltroAplicado();
         //Boton para aplicar los filtros
         Button botonAplicar = findViewById(R.id.buttonAplicar);
         botonAplicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(this, "Funciona el aplicar", Toast.LENGTH_SHORT).show();
+                Gson gson = new Gson();
+                Intent intent = new Intent(FiltrosActivity.this, MainActivity.class);
+                HashMap<String, Boolean> estadosCB = new HashMap<>();
+                estadosCB.put(Constantes.PAGADAS, cbPagadas.isChecked());
+                estadosCB.put(Constantes.ANULADAS, cbAnuladas.isChecked());
+                estadosCB.put(Constantes.CUOTA_FIJA, cbCuotaFija.isChecked());
+                estadosCB.put(Constantes.PENDIENTES_PAGO, cbPendientesPago.isChecked());
+                estadosCB.put(Constantes.PLAN_PAGO, cbPlanPago.isChecked());
+                //Creamos un objeto filtro con los parametros obtenidos y lo enviamos
+                FiltrosVO filtroEnviado = new FiltrosVO(fechaInicio, fechaFinal, maxImporte, estadosCB);
+                //Para llevar el filtro a la otra clase
+                intent.putExtra("filtro", gson.toJson(filtroEnviado));
+                startActivity(intent);
             }
         });
 
@@ -85,9 +106,9 @@ public class FiltrosActivity extends AppCompatActivity {
             }
         });
 
-        // TODO devolverFacturasFiltradas() o devolverFiltroAplicado();
-
     }
+
+
 
 
     //Métodos a los que llamamos arriba -->
@@ -133,7 +154,7 @@ public class FiltrosActivity extends AppCompatActivity {
         });
     }
 
-    private void establecerFechas() {
+    private String obtenerFechaInicio() {
         //Boton para fecha desde, inicializar y al hacer click salga el calendario
         Button botonFechaDesde = findViewById(R.id.fechaDesde);
         botonFechaDesde.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +170,10 @@ public class FiltrosActivity extends AppCompatActivity {
             }
         });
 
+        return botonFechaDesde.getText().toString();
+    }
+
+    private String obtenerFechaFinal() {
         //Boton fecha hasta, inicializar y al hacer click salga el calendario
         Button botonFechaHasta = findViewById(R.id.fechaHasta);
         botonFechaHasta.setOnClickListener(new View.OnClickListener() {
@@ -163,6 +188,8 @@ public class FiltrosActivity extends AppCompatActivity {
                 dpd.show();
             }
         });
+
+        return botonFechaHasta.getText().toString();
     }
 
     private int calcularMaximoImporte(ArrayList<FacturaVO> listaFactura) {
@@ -197,12 +224,14 @@ public class FiltrosActivity extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                //No hace nada
+                Log.d("onStartTrackingTouch", "onStartTrackingTouch: ha fallado");
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                //No hace nada
+                Log.d("onStopTrackingTouch", "onStopTrackingTouch: ha fallado");
             }
         });
     }
