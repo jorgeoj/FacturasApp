@@ -53,8 +53,9 @@ public class FiltrosActivity extends AppCompatActivity {
 
 
         //Seekbar -->
+        TextView tvValorImporte = (TextView) findViewById(R.id.tvValorImporte);
         //Calculamos el valor máximo de las facturas
-        int maxImporte = calcularMaximoImporte(listaFactura);
+        int maxImporte = getIntent().getIntExtra("maxImporte", 0);
 
         //Usamos el maximo para los textview asociados a la seekbar
         //Y controlamos el movimiento en este metodo
@@ -83,9 +84,9 @@ public class FiltrosActivity extends AppCompatActivity {
                 estadosCB.put(Constantes.PENDIENTES_PAGO, cbPendientesPago.isChecked());
                 estadosCB.put(Constantes.PLAN_PAGO, cbPlanPago.isChecked());
                 //Creamos un objeto filtro con los parametros obtenidos y lo enviamos
-                FiltrosVO filtroEnviado = new FiltrosVO(fechaInicio, fechaFinal, maxImporte, estadosCB);
+                FiltrosVO filtroEnviado = new FiltrosVO(fechaInicio, fechaFinal, Integer.parseInt(tvValorImporte.getText().toString()), estadosCB);
                 //Para llevar el filtro a la otra clase
-                intent.putExtra("filtro", gson.toJson(filtroEnviado));
+                intent.putExtra(Constantes.FILTRO_DATOS, gson.toJson(filtroEnviado));
                 startActivity(intent);
             }
         });
@@ -190,18 +191,6 @@ public class FiltrosActivity extends AppCompatActivity {
         });
 
         return botonFechaHasta.getText().toString();
-    }
-
-    private int calcularMaximoImporte(ArrayList<FacturaVO> listaFactura) {
-        int maxImporte = 0;
-
-        for (FacturaVO factura : listaFactura) {
-            double maxFactura = factura.getImporteOrdenacion();
-            if (maxImporte < maxFactura) {
-                maxImporte = (int) Math.ceil(maxFactura);
-            }
-        }
-        return maxImporte;
     }
 
     private void pintarMaxSeekbar(int maxImporte) {
