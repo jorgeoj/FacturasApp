@@ -43,66 +43,22 @@ public class FiltrosActivity extends AppCompatActivity {
         establecerMenuToolbar();
 
 
-        //Boton para fecha desde, inicializar y al hacer click salga el calendario
-        Button botonFechaDesde = findViewById(R.id.fechaDesde);
-        botonFechaDesde.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH)+1;
-                int day = c.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dpd = new DatePickerDialog(FiltrosActivity.this, (view1, year1, monthofyear, dayofmonth) ->
-                        botonFechaDesde.setText(dayofmonth + "/" + (monthofyear+1) + "/" + year1), year, month, day);
-                dpd.show();
-            }
-        });
-
-        //Boton fecha hasta, inicializar y al hacer click salga el calendario
-        Button botonFechaHasta = findViewById(R.id.fechaHasta);
-        botonFechaHasta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH)+1;
-                int day = c.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dpd = new DatePickerDialog(FiltrosActivity.this, (view1, year1, monthofyear, dayofmonth) ->
-                        botonFechaHasta.setText(dayofmonth + "/" + (monthofyear+1) + "/" + year1), year, month, day);
-                dpd.show();
-            }
-        });
+        //Botones para la fecha -->
+        establecerFechas();
 
 
-
+        //Seekbar -->
+        //Calculamos el valor máximo de las facturas
         int maxImporte = calcularMaximoImporte(listaFactura);
-        //seekBar.setMax(maxImporte);
-        //seekBar.setProgress(maxImporte);
-        //tvMaxSeekBar.setText(String.valueOf(maxImporte));
-        //tvValorImporte.setText(String.valueOf(maxImporte));
 
-        // TODO pintarMaxSeekbar(maxImporte);
-        //Seekbar y textos de la seekbar, inicializar y onClick
-        SeekBar seekBar = findViewById(R.id.seekBar);
-        TextView tvMaxSeekBar = (TextView) findViewById(R.id.tvMaxSeekbar);
-        TextView tvValorImporte = (TextView) findViewById(R.id.tvValorImporte);
+        //Usamos el maximo para los textview asociados a la seekbar
+        //Y controlamos el movimiento en este metodo
+        pintarMaxSeekbar(maxImporte);
 
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                tvValorImporte.setText(String.valueOf(i));
-            }
+        //Checkboxes -->
+        // TODO checkbox tienen que devolver algo para filtrar o como?
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
 
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
 
         //Boton para aplicar los filtros
         Button botonAplicar = findViewById(R.id.buttonAplicar);
@@ -118,21 +74,14 @@ public class FiltrosActivity extends AppCompatActivity {
         botonEliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SeekBar seekBar = findViewById(R.id.seekBar);
-                CheckBox chBoxPagadas = findViewById(R.id.cbPagadas);
-                CheckBox chBoxAnuladas = findViewById(R.id.cbAnuladas);
-                CheckBox chBoxCuotaFija = findViewById(R.id.cbCuotaFija);
-                CheckBox chBoxPendientesPago = findViewById(R.id.cbPendientesPago);
-                CheckBox chBoxPlanPago = findViewById(R.id.cbPlanPago);
+                //botones de fecha por defecto
+                restablecerFechas();
 
-                //Poner la seekbar a 0
-                seekBar.setProgress(0);
-                //Quitar el check a las checkbox
-                chBoxPagadas.setChecked(false);
-                chBoxAnuladas.setChecked(false);
-                chBoxCuotaFija.setChecked(false);
-                chBoxPendientesPago.setChecked(false);
-                chBoxPlanPago.setChecked(false);
+                //SeekBar por defecto
+                restablecerSeekbar(maxImporte);
+
+                //Todas las checkbox por defecto
+                restablecerCheckBox();
             }
         });
 
@@ -141,7 +90,7 @@ public class FiltrosActivity extends AppCompatActivity {
     }
 
 
-
+    //Métodos a los que llamamos arriba -->
 
     //Al pasar de una actividad a otra cargamos la lista aqui y la metemos en una variable
     private ArrayList<FacturaVO> cargarListaFacturas() {
@@ -183,6 +132,39 @@ public class FiltrosActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void establecerFechas() {
+        //Boton para fecha desde, inicializar y al hacer click salga el calendario
+        Button botonFechaDesde = findViewById(R.id.fechaDesde);
+        botonFechaDesde.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH)+1;
+                int day = c.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dpd = new DatePickerDialog(FiltrosActivity.this, (view1, year1, monthofyear, dayofmonth) ->
+                        botonFechaDesde.setText(dayofmonth + "/" + (monthofyear+1) + "/" + year1), year, month, day);
+                dpd.show();
+            }
+        });
+
+        //Boton fecha hasta, inicializar y al hacer click salga el calendario
+        Button botonFechaHasta = findViewById(R.id.fechaHasta);
+        botonFechaHasta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH)+1;
+                int day = c.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dpd = new DatePickerDialog(FiltrosActivity.this, (view1, year1, monthofyear, dayofmonth) ->
+                        botonFechaHasta.setText(dayofmonth + "/" + (monthofyear+1) + "/" + year1), year, month, day);
+                dpd.show();
+            }
+        });
+    }
+
     private int calcularMaximoImporte(ArrayList<FacturaVO> listaFactura) {
         int maxImporte = 0;
 
@@ -193,6 +175,66 @@ public class FiltrosActivity extends AppCompatActivity {
             }
         }
         return maxImporte;
+    }
+
+    private void pintarMaxSeekbar(int maxImporte) {
+        //Seekbar y textos de la seekbar, inicializar y onClick
+        SeekBar seekBar = findViewById(R.id.seekBar);
+        TextView tvMaxSeekBar = (TextView) findViewById(R.id.tvMaxSeekbar);
+        TextView tvValorImporte = (TextView) findViewById(R.id.tvValorImporte);
+
+        seekBar.setMax(maxImporte);
+        seekBar.setProgress(maxImporte);
+        tvMaxSeekBar.setText(String.valueOf(maxImporte));
+        tvValorImporte.setText(String.valueOf(maxImporte));
+
+        //Acciones a realizar en caso de mover la barra
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                tvValorImporte.setText(String.valueOf(i));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
+    private void restablecerFechas() {
+        // Restablecer valores de fecha
+        Button fechaDesde = findViewById(R.id.fechaDesde);
+        fechaDesde.setText(R.string.activity_filtros_button_date);
+        Button fechaHasta = findViewById(R.id.fechaHasta);
+        fechaHasta.setText(R.string.activity_filtros_button_date);
+    }
+
+    private void restablecerSeekbar(int maxImporte) {
+        SeekBar seekBar = findViewById(R.id.seekBar);
+
+        //Poner la seekbar al valor maximo de las facturas como predeterminado
+        seekBar.setProgress(maxImporte);
+    }
+
+    private void restablecerCheckBox() {
+        CheckBox chBoxPagadas = findViewById(R.id.cbPagadas);
+        CheckBox chBoxAnuladas = findViewById(R.id.cbAnuladas);
+        CheckBox chBoxCuotaFija = findViewById(R.id.cbCuotaFija);
+        CheckBox chBoxPendientesPago = findViewById(R.id.cbPendientesPago);
+        CheckBox chBoxPlanPago = findViewById(R.id.cbPlanPago);
+
+        //Quitar el check a las checkbox
+        chBoxPagadas.setChecked(false);
+        chBoxAnuladas.setChecked(false);
+        chBoxCuotaFija.setChecked(false);
+        chBoxPendientesPago.setChecked(false);
+        chBoxPlanPago.setChecked(false);
     }
 
 }
