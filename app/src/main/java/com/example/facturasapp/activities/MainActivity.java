@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<FacturaVO> listaAux = new ArrayList<>();
         for (FacturaVO factura: listaFacturas) {
             if (factura.getDescEstado().equals(Constantes.PAGADAS)){
-
+                //listaAux.add();
             }
         }
     }
