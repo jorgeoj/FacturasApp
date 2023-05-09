@@ -73,6 +73,8 @@ public class FiltrosActivity extends AppCompatActivity {
         //Boton para aplicar los filtros
         Button botonAplicar = findViewById(R.id.buttonAplicar);
         botonAplicar.setOnClickListener(new View.OnClickListener() {
+            Button botonFechaDesde = findViewById(R.id.fechaDesde);
+            Button botonFechaHasta = findViewById(R.id.fechaHasta);
             @Override
             public void onClick(View view) {
                 Gson gson = new Gson();
@@ -84,7 +86,7 @@ public class FiltrosActivity extends AppCompatActivity {
                 estadosCB.put(Constantes.PENDIENTES_PAGO, cbPendientesPago.isChecked());
                 estadosCB.put(Constantes.PLAN_PAGO, cbPlanPago.isChecked());
                 //Creamos un objeto filtro con los parametros obtenidos y lo enviamos
-                FiltrosVO filtroEnviado = new FiltrosVO(fechaInicio, fechaFinal, Integer.parseInt(tvValorImporte.getText().toString()), estadosCB);
+                FiltrosVO filtroEnviado = new FiltrosVO(botonFechaDesde.getText().toString(), botonFechaHasta.getText().toString(), Integer.parseInt(tvValorImporte.getText().toString()), estadosCB);
                 //Para llevar el filtro a la otra clase
                 intent.putExtra(Constantes.FILTRO_DATOS, gson.toJson(filtroEnviado));
                 startActivity(intent);

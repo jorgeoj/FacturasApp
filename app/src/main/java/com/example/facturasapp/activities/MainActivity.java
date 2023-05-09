@@ -8,13 +8,11 @@ import androidx.core.view.MenuProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.RelativeLayout;
 
 import com.example.facturasapp.data.adapters.APIAdapter;
 import com.example.facturasapp.data.constantes.Constantes;
@@ -29,7 +27,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -126,30 +124,28 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<FacturaVO> llenarDatos(String datosFiltro) {
         FiltrosVO filtros = new Gson().fromJson(datosFiltro, FiltrosVO.class);
-        ArrayList<FacturaVO> filtroLista = new ArrayList<>();
+        ArrayList<FacturaVO> filtroLista;
 
-        //Metodos creados para filtrar la lista -->
-
-        //Meto en el filtro las fechas
-
-        //filtroLista = comprobarFecha(filtros.getFechaInicio(), filtros.getFechaFin());
-        comprobarSeekBar(filtros.getMaxImporte(), filtroLista);
+        filtroLista =  comprobarSeekBar(filtros.getMaxImporte());
+        if(!Objects.equals(filtros.getFechaInicio(), getBaseContext().getResources().getString(R.string.activity_filtros_button_date)) ||
+                !Objects.equals(filtros.getFechaFin(), getBaseContext().getResources().getString(R.string.activity_filtros_button_date))) {
+            filtroLista = comprobarFecha(filtros.getFechaInicio(), filtros.getFechaFin(), filtroLista);
+        }
+        comprobarCheckBox();
         return filtroLista;
     }
 
 
 
-
     //Metodo para filtrar las fechas
-    private ArrayList<FacturaVO> comprobarFecha(String fechaInicio, String fechaFin) {
+    private ArrayList<FacturaVO> comprobarFecha(String fechaInicio, String fechaFin, ArrayList<FacturaVO> filtroLista) {
         //Creamos lista auxiliar para despues devolverla
         ArrayList<FacturaVO> listaAux = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyyy");
         Date fechaDesde = new Date();
         Date fechaHasta = new Date();
 
-        if(fechaInicio != getBaseContext().getResources().getString(R.string.activity_filtros_button_date) ||
-                fechaFin != getBaseContext().getResources().getString(R.string.activity_filtros_button_date) ){
+        {
             //Parseamos las fechas para cambiarlas de tipo String a tipo Date
             try {
                 fechaDesde = sdf.parse(fechaInicio);
@@ -159,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             //Recorremos la lista de facturas y la que coincidan la añadimos a la lista auxiliar para luego devolverla
-            for (FacturaVO facturaFecha: listaFacturas) {
+            for (FacturaVO facturaFecha: filtroLista) {
                 Date fechaFactura;
                 try {
                     fechaFactura = sdf.parse(facturaFecha.getFecha());
@@ -175,15 +171,27 @@ public class MainActivity extends AppCompatActivity {
         return listaAux;
     }
 
-    private void comprobarSeekBar(int maxImporte, List<FacturaVO> filtroLista) {
+    private ArrayList<FacturaVO> comprobarSeekBar(int maxImporte) {
+
+        ArrayList<FacturaVO> listaAux = new ArrayList<>();
 
         for (FacturaVO facturaSeekBar : listaFacturas) {
             if (Double.parseDouble(String.valueOf(facturaSeekBar.getImporteOrdenacion())) < maxImporte) {
-                filtroLista.add(facturaSeekBar);
+                listaAux.add(facturaSeekBar);
             }
         }
 
-        Log.d("filtroLista", filtroLista.toString());
+        return listaAux;
+    }
+
+    //Metodo filtro de las checkBox
+    private void comprobarCheckBox() {
+        ArrayList<FacturaVO> listaAux = new ArrayList<>();
+        for (FacturaVO factura: listaFacturas) {
+            if (factura.getDescEstado().equals(Constantes.PAGADAS)){
+
+            }
+        }
     }
 
     private int calcularMaximoImporte(ArrayList<FacturaVO> listaFactura) {
