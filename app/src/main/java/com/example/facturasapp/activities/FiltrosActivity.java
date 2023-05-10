@@ -8,6 +8,7 @@ import androidx.core.view.MenuProvider;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -27,6 +28,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class FiltrosActivity extends AppCompatActivity {
@@ -37,23 +39,18 @@ public class FiltrosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtros);
 
-        //Al pasar de una actividad a otra cargamos la lista aqui y la metemos en una variable
-        ArrayList<FacturaVO> listaFactura = cargarListaFacturas();
-
         //Metodo para cargar toolbar en blanco
         establecerToolbar();
 
         //Funcionalidades del menu de la toolbar
         establecerMenuToolbar();
 
-
-        //Botones para la fecha -->
-        String fechaInicio = obtenerFechaInicio();
-        String fechaFinal = obtenerFechaFinal();
+        obtenerFechaInicio();
+        obtenerFechaFinal();
 
 
         //Seekbar -->
-        TextView tvValorImporte = (TextView) findViewById(R.id.tvValorImporte);
+        TextView tvValorImporte = findViewById(R.id.tvValorImporte);
         //Calculamos el valor máximo de las facturas
         int maxImporte = getIntent().getIntExtra("maxImporte", 0);
 
@@ -69,7 +66,6 @@ public class FiltrosActivity extends AppCompatActivity {
         CheckBox cbPendientesPago = findViewById(R.id.cbPendientesPago);
         CheckBox cbPlanPago = findViewById(R.id.cbPlanPago);
 
-        // TODO devolverFacturasFiltradas() o devolverFiltroAplicado();
         //Boton para aplicar los filtros
         Button botonAplicar = findViewById(R.id.buttonAplicar);
         botonAplicar.setOnClickListener(new View.OnClickListener() {
@@ -116,14 +112,6 @@ public class FiltrosActivity extends AppCompatActivity {
 
     //Métodos a los que llamamos arriba -->
 
-    //Al pasar de una actividad a otra cargamos la lista aqui y la metemos en una variable
-    private ArrayList<FacturaVO> cargarListaFacturas() {
-        ArrayList<FacturaVO> listaFactura = getIntent().getParcelableArrayListExtra("facturas");
-        Log.d("tamaño facturas", "" + listaFactura.size());
-
-        return listaFactura;
-    }
-
     //Cambiamos el color y el titulo de la toolbar
     private void establecerToolbar() {
         //Toolbar en blanco
@@ -157,7 +145,7 @@ public class FiltrosActivity extends AppCompatActivity {
         });
     }
 
-    private String obtenerFechaInicio() {
+    private void obtenerFechaInicio() {
         //Boton para fecha desde, inicializar y al hacer click salga el calendario
         Button botonFechaDesde = findViewById(R.id.fechaDesde);
         botonFechaDesde.setOnClickListener(new View.OnClickListener() {
@@ -169,16 +157,16 @@ public class FiltrosActivity extends AppCompatActivity {
                 int day = c.get(Calendar.DAY_OF_MONTH);
                 DatePickerDialog dpd = new DatePickerDialog(FiltrosActivity.this, (view1, year1, monthofyear, dayofmonth) ->
                         botonFechaDesde.setText(dayofmonth + "/" + (monthofyear+1) + "/" + year1), year, month, day);
+                dpd.getDatePicker().setMaxDate(new Date().getTime());
                 dpd.show();
             }
         });
-
-        return botonFechaDesde.getText().toString();
     }
 
     private String obtenerFechaFinal() {
         //Boton fecha hasta, inicializar y al hacer click salga el calendario
         Button botonFechaHasta = findViewById(R.id.fechaHasta);
+        Button botonFechaDesde = findViewById(R.id.fechaDesde);
         botonFechaHasta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

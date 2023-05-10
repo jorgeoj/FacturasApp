@@ -27,7 +27,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -126,12 +127,29 @@ public class MainActivity extends AppCompatActivity {
         FiltrosVO filtros = new Gson().fromJson(datosFiltro, FiltrosVO.class);
         ArrayList<FacturaVO> filtroLista;
 
+        //Comprobamos si hay que filtrar la seekbar y hacemos los cambios
         filtroLista =  comprobarSeekBar(filtros.getMaxImporte());
-        if(!Objects.equals(filtros.getFechaInicio(), getBaseContext().getResources().getString(R.string.activity_filtros_button_date)) ||
-                !Objects.equals(filtros.getFechaFin(), getBaseContext().getResources().getString(R.string.activity_filtros_button_date))) {
+        //Vemos si hay que filtrar las fechas y las filtramos
+        if(!filtros.getFechaInicio().equals(getBaseContext().getResources().getString(R.string.activity_filtros_button_date))  ||
+                !filtros.getFechaFin().equals(getBaseContext().getResources().getString(R.string.activity_filtros_button_date))) {
             filtroLista = comprobarFecha(filtros.getFechaInicio(), filtros.getFechaFin(), filtroLista);
         }
-        comprobarCheckBox();
+
+        //Comprobamos si hay que filtrar las checkbox
+        boolean hayBooleanoTrue = false;
+        for (Map.Entry<String, Boolean> entry : filtros.getEstadoCB().entrySet()) {
+            if (entry.getValue()) {
+                hayBooleanoTrue = true;
+                break;
+            }
+        }
+
+        if (hayBooleanoTrue) {
+            filtroLista = comprobarCheckBox(filtros.getEstadoCB(), filtroLista);
+        }
+
+        // TODO devolver mensaje de "aqui no hay nada" en caso de que filtroLista esté vacío
+
         return filtroLista;
     }
 
@@ -185,13 +203,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Metodo filtro de las checkBox
-    private void comprobarCheckBox() {
+    private ArrayList<FacturaVO> comprobarCheckBox(HashMap<String, Boolean> estadoCB, ArrayList<FacturaVO> filtroLista) {
         ArrayList<FacturaVO> listaAux = new ArrayList<>();
-        for (FacturaVO factura: listaFacturas) {
-            if (factura.getDescEstado().equals(Constantes.PAGADAS)){
-                //listaAux.add();
+
+        for (FacturaVO factura: filtroLista) {
+            if (factura.getDescEstado().equals(Constantes.PAGADAS) && Boolean.TRUE.equals(estadoCB.get(Constantes.PAGADAS))){
+                listaAux.add(factura);
+            } else if (factura.getDescEstado().equals(Constantes.ANULADAS) && Boolean.TRUE.equals(estadoCB.get(Constantes.ANULADAS))) {
+                listaAux.add(factura);
+            } else if (factura.getDescEstado().equals(Constantes.CUOTA_FIJA) && Boolean.TRUE.equals(estadoCB.get(Constantes.CUOTA_FIJA))) {
+                listaAux.add(factura);
+            } else if (factura.getDescEstado().equals(Constantes.PENDIENTES_PAGO) && Boolean.TRUE.equals(estadoCB.get(Constantes.PENDIENTES_PAGO))) {
+                listaAux.add(factura);
+            } else if (factura.getDescEstado().equals(Constantes.PLAN_PAGO) && Boolean.TRUE.equals(estadoCB.get(Constantes.PLAN_PAGO))) {
+                listaAux.add(factura);
             }
         }
+
+        return listaAux;
     }
 
     private int calcularMaximoImporte(ArrayList<FacturaVO> listaFactura) {

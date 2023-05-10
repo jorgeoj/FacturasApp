@@ -9,10 +9,10 @@ public class Constantes {
     public static final String MONEDA = " €";
 
     //Constantes para los estados de las checkbox
-    public static final String PAGADAS = "pagadas";
-    public static final String ANULADAS = "anuladas";
-    public static final String CUOTA_FIJA = "cuota fija";
-    public static final String PENDIENTES_PAGO = "pendientes de pago";
-    public static final String PLAN_PAGO = "plan de pago";
+    public static final String PAGADAS = "Pagada";
+    public static final String ANULADAS = "Anulada";
+    public static final String CUOTA_FIJA = "Cuota fija";
+    public static final String PENDIENTES_PAGO = "Pendiente de pago";
+    public static final String PLAN_PAGO = "Plan de pago";
     public static final String FILTRO_DATOS ="filtro";
 }
