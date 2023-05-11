@@ -13,6 +13,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.facturasapp.data.adapters.APIAdapter;
 import com.example.facturasapp.data.constantes.Constantes;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private FacturasAdapter adapter;
     private RecyclerView rv1;
     private Toolbar toolbar;
+    private TextView tvNoDatos;
     public int maxImporte;
 
     private ArrayList<FacturaVO> listaFacturas;
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         rv1 = findViewById(R.id.rv1);
+        tvNoDatos = findViewById(R.id.tvNoDatos);
 
         //Toolbar en blanco
         toolbar = findViewById(R.id.toolbarPractica);
@@ -148,10 +153,13 @@ public class MainActivity extends AppCompatActivity {
             filtroLista = comprobarCheckBox(filtros.getEstadoCB(), filtroLista);
         }
 
-        // TODO devolver mensaje de "aqui no hay nada" en caso de que filtroLista esté vacío
+        if(filtroLista.isEmpty()){
+            tvNoDatos.setVisibility(View.VISIBLE);
+        }
 
         return filtroLista;
     }
+
 
 
 
@@ -234,4 +242,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return maxImporte;
     }
+
 }

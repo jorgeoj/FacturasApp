@@ -2,6 +2,7 @@
     <string name="app_name">FacturasApp</string>
     <!-- Strings de la main activity -->
     <string name="activity_main_title_toolbar">Facturas</string>
+    <string name="activity_main_textview_no_filters">No se encontraron facturas</string>
 
     <!-- Strings del popup -->
     <string name="layout_popup_main_title">Información</string>
