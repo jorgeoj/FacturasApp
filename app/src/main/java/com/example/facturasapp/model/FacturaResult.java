@@ -1,33 +1,18 @@
 package com.example.facturasapp.model;
 
-import com.example.facturasapp.model.FacturaVO;
-
-import java.util.ArrayList;
+import java.util.List;
 
 public class FacturaResult {
 
-    //Declaracion de la lista de facturas (JSON)
-    private String numFacturas;
-    private ArrayList<FacturaVO> facturas;
+    private List<FacturaVO> facturas;
 
-    public FacturaResult(String numFacturas, ArrayList<FacturaVO> facturas) {
-        this.numFacturas = numFacturas;
+    public FacturaResult(List<FacturaVO> facturas) {
+        //Declaracion de la lista de facturas (JSON)
         this.facturas = facturas;
     }
 
-    public String getNumFacturas() {
-        return numFacturas;
-    }
-
-    public void setNumFacturas(String numFacturas) {
-        this.numFacturas = numFacturas;
-    }
-
-    public ArrayList<FacturaVO> getFacturas() {
+    public List<FacturaVO> getFacturas() {
         return facturas;
     }
 
-    public void setFacturas(ArrayList<FacturaVO> facturas) {
-        this.facturas = facturas;
-    }
 }

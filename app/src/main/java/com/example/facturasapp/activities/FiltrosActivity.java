@@ -91,18 +91,15 @@ public class FiltrosActivity extends AppCompatActivity {
 
         //Boton para eliminar los filtros
         Button botonEliminar = findViewById(R.id.buttonEliminarFiltros);
-        botonEliminar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //botones de fecha por defecto
-                restablecerFechas();
+        botonEliminar.setOnClickListener(view -> {
+            //botones de fecha por defecto
+            restablecerFechas();
 
-                //SeekBar por defecto
-                restablecerSeekbar(maxImporte);
+            //SeekBar por defecto
+            restablecerSeekbar(maxImporte);
 
-                //Todas las checkbox por defecto
-                restablecerCheckBox();
-            }
+            //Todas las checkbox por defecto
+            restablecerCheckBox();
         });
 
     }
@@ -148,36 +145,29 @@ public class FiltrosActivity extends AppCompatActivity {
     private void obtenerFechaInicio() {
         //Boton para fecha desde, inicializar y al hacer click salga el calendario
         Button botonFechaDesde = findViewById(R.id.fechaDesde);
-        botonFechaDesde.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH)+1;
-                int day = c.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dpd = new DatePickerDialog(FiltrosActivity.this, (view1, year1, monthofyear, dayofmonth) ->
-                        botonFechaDesde.setText(dayofmonth + "/" + (monthofyear+1) + "/" + year1), year, month, day);
-                dpd.getDatePicker().setMaxDate(new Date().getTime());
-                dpd.show();
-            }
+        botonFechaDesde.setOnClickListener(view -> {
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH)+1;
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog dpd = new DatePickerDialog(FiltrosActivity.this, (view1, year1, monthofyear, dayofmonth) ->
+                    botonFechaDesde.setText(dayofmonth + "/" + (monthofyear+1) + "/" + year1), year, month, day);
+            dpd.getDatePicker().setMaxDate(new Date().getTime());
+            dpd.show();
         });
     }
 
     private String obtenerFechaFinal() {
         //Boton fecha hasta, inicializar y al hacer click salga el calendario
         Button botonFechaHasta = findViewById(R.id.fechaHasta);
-        Button botonFechaDesde = findViewById(R.id.fechaDesde);
-        botonFechaHasta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH)+1;
-                int day = c.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dpd = new DatePickerDialog(FiltrosActivity.this, (view1, year1, monthofyear, dayofmonth) ->
-                        botonFechaHasta.setText(dayofmonth + "/" + (monthofyear+1) + "/" + year1), year, month, day);
-                dpd.show();
-            }
+        botonFechaHasta.setOnClickListener(view -> {
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH)+1;
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog dpd = new DatePickerDialog(FiltrosActivity.this, (view1, year1, monthofyear, dayofmonth) ->
+                    botonFechaHasta.setText(dayofmonth + "/" + (monthofyear+1) + "/" + year1), year, month, day);
+            dpd.show();
         });
 
         return botonFechaHasta.getText().toString();

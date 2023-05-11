@@ -3,6 +3,10 @@ package com.example.facturasapp.data.constantes;
 //IMPORTANTE: Todas las constantes el nombre es con mayúsculas y separado con _
 public class Constantes {
 
+    //El constructor es por el sonar
+    private Constantes() {
+    }
+
     //Constantes para FacturasAdapter
     public static final String ESTADO_PENDIENTE = "Pendiente de pago";
     public static final String ESTADO_PAGADO = "Pagada";

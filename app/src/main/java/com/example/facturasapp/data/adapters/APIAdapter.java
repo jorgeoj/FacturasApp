@@ -9,6 +9,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIAdapter {
     //Se hace la llamada a internet y coge los datos
+
+    //Constructor puesto por el sonar
+    private APIAdapter() {
+    }
+
     private static FacturaService service;
 
     public static FacturaService getService() {

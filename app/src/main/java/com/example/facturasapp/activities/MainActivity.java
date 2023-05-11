@@ -1,12 +1,5 @@
 package com.example.facturasapp.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuHost;
-import androidx.core.view.MenuProvider;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,14 +7,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.facturasapp.R;
 import com.example.facturasapp.data.adapters.APIAdapter;
+import com.example.facturasapp.data.adapters.FacturasAdapter;
 import com.example.facturasapp.data.constantes.Constantes;
 import com.example.facturasapp.model.FacturaResult;
-import com.example.facturasapp.data.adapters.FacturasAdapter;
-import com.example.facturasapp.R;
 import com.example.facturasapp.model.FacturaVO;
 import com.example.facturasapp.model.FiltrosVO;
 import com.google.gson.Gson;
@@ -30,7 +29,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -41,11 +40,10 @@ public class MainActivity extends AppCompatActivity {
 
     private FacturasAdapter adapter;
     private RecyclerView rv1;
-    private Toolbar toolbar;
     private TextView tvNoDatos;
-    public int maxImporte;
+    private int maxImporte;
 
-    private ArrayList<FacturaVO> listaFacturas;
+    private List<FacturaVO> listaFacturas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         tvNoDatos = findViewById(R.id.tvNoDatos);
 
         //Toolbar en blanco
+        Toolbar toolbar;
         toolbar = findViewById(R.id.toolbarPractica);
         MainActivity.this.setSupportActionBar(toolbar);
 
@@ -83,14 +82,8 @@ public class MainActivity extends AppCompatActivity {
         peticionFacturas();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
     public void cambiarActividad() {
         Intent intent = new Intent(MainActivity.this, FiltrosActivity.class);
-        intent.putExtra("facturas", listaFacturas);
         intent.putExtra("maxImporte", maxImporte);
         startActivity(intent);
     }
@@ -128,9 +121,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private ArrayList<FacturaVO> llenarDatos(String datosFiltro) {
+    private List<FacturaVO> llenarDatos(String datosFiltro) {
         FiltrosVO filtros = new Gson().fromJson(datosFiltro, FiltrosVO.class);
-        ArrayList<FacturaVO> filtroLista;
+        List<FacturaVO> filtroLista;
 
         //Comprobamos si hay que filtrar la seekbar y hacemos los cambios
         filtroLista =  comprobarSeekBar(filtros.getMaxImporte());
@@ -143,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         //Comprobamos si hay que filtrar las checkbox
         boolean hayBooleanoTrue = false;
         for (Map.Entry<String, Boolean> entry : filtros.getEstadoCB().entrySet()) {
-            if (entry.getValue()) {
+            if (Boolean.TRUE.equals(entry.getValue())) {
                 hayBooleanoTrue = true;
                 break;
             }
@@ -164,14 +157,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     //Metodo para filtrar las fechas
-    private ArrayList<FacturaVO> comprobarFecha(String fechaInicio, String fechaFin, ArrayList<FacturaVO> filtroLista) {
+    private ArrayList<FacturaVO> comprobarFecha(String fechaInicio, String fechaFin, List<FacturaVO> filtroLista) {
         //Creamos lista auxiliar para despues devolverla
         ArrayList<FacturaVO> listaAux = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyyy");
         Date fechaDesde = new Date();
         Date fechaHasta = new Date();
 
-        {
             //Parseamos las fechas para cambiarlas de tipo String a tipo Date
             try {
                 fechaDesde = sdf.parse(fechaInicio);
@@ -192,14 +184,13 @@ public class MainActivity extends AppCompatActivity {
                     listaAux.add(facturaFecha);
                 }
             }
-        }
 
         return listaAux;
     }
 
-    private ArrayList<FacturaVO> comprobarSeekBar(int maxImporte) {
+    private List<FacturaVO> comprobarSeekBar(int maxImporte) {
 
-        ArrayList<FacturaVO> listaAux = new ArrayList<>();
+        List<FacturaVO> listaAux = new ArrayList<>();
 
         for (FacturaVO facturaSeekBar : listaFacturas) {
             if (Double.parseDouble(String.valueOf(facturaSeekBar.getImporteOrdenacion())) < maxImporte) {
@@ -211,19 +202,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Metodo filtro de las checkBox
-    private ArrayList<FacturaVO> comprobarCheckBox(HashMap<String, Boolean> estadoCB, ArrayList<FacturaVO> filtroLista) {
+    private ArrayList<FacturaVO> comprobarCheckBox(Map<String, Boolean> estadoCB, List<FacturaVO> filtroLista) {
         ArrayList<FacturaVO> listaAux = new ArrayList<>();
 
         for (FacturaVO factura: filtroLista) {
-            if (factura.getDescEstado().equals(Constantes.PAGADAS) && Boolean.TRUE.equals(estadoCB.get(Constantes.PAGADAS))){
-                listaAux.add(factura);
-            } else if (factura.getDescEstado().equals(Constantes.ANULADAS) && Boolean.TRUE.equals(estadoCB.get(Constantes.ANULADAS))) {
-                listaAux.add(factura);
-            } else if (factura.getDescEstado().equals(Constantes.CUOTA_FIJA) && Boolean.TRUE.equals(estadoCB.get(Constantes.CUOTA_FIJA))) {
-                listaAux.add(factura);
-            } else if (factura.getDescEstado().equals(Constantes.PENDIENTES_PAGO) && Boolean.TRUE.equals(estadoCB.get(Constantes.PENDIENTES_PAGO))) {
-                listaAux.add(factura);
-            } else if (factura.getDescEstado().equals(Constantes.PLAN_PAGO) && Boolean.TRUE.equals(estadoCB.get(Constantes.PLAN_PAGO))) {
+            String descEstado = factura.getDescEstado();
+            if (estadoCB.containsKey(descEstado) && Boolean.TRUE.equals(estadoCB.get(descEstado))) {
                 listaAux.add(factura);
             }
         }
@@ -231,16 +215,16 @@ public class MainActivity extends AppCompatActivity {
         return listaAux;
     }
 
-    private int calcularMaximoImporte(ArrayList<FacturaVO> listaFactura) {
-        int maxImporte = 0;
+    private int calcularMaximoImporte(List<FacturaVO> listaFactura) {
+        int importeMax = 0;
 
         for (FacturaVO factura : listaFactura) {
             double maxFactura = factura.getImporteOrdenacion();
-            if (maxImporte < maxFactura) {
-                maxImporte = (int) Math.ceil(maxFactura);
+            if (importeMax < maxFactura) {
+                importeMax = (int) Math.ceil(maxFactura);
             }
         }
-        return maxImporte;
+        return importeMax;
     }
 
 }

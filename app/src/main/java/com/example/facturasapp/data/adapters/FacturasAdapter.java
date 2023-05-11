@@ -43,7 +43,7 @@ public class FacturasAdapter extends RecyclerView.Adapter<FacturasAdapter.ViewHo
     //Poner el texto adecuado de las facturas
     @Override
     public void onBindViewHolder(@NonNull FacturasAdapter.ViewHolder holder, int position) {
-        holder.tvImporteOrdenacion.setText(String.valueOf(listaFacturas.get(position).getImporteOrdenacion()) + Constantes.MONEDA);
+        holder.tvImporteOrdenacion.setText(listaFacturas.get(position).getImporteOrdenacion() + Constantes.MONEDA);
         holder.tvFecha.setText((listaFacturas.get(position).getFecha()));
         holder.tvDescEstado.setText(listaFacturas.get(position).getDescEstado());
         //Cambiar el color del textview según el estado
@@ -89,12 +89,7 @@ public class FacturasAdapter extends RecyclerView.Adapter<FacturasAdapter.ViewHo
 
                     //cierra el popup al darle al boton
                     Button cerrarButton = mDialog.findViewById(R.id.buttonCerrarPopup);
-                    cerrarButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mDialog.dismiss();
-                        }
-                    });
+                    cerrarButton.setOnClickListener(v -> mDialog.dismiss());
             });
         }
     }
