@@ -3,7 +3,13 @@ package com.example.facturasapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "factura")
 public class FacturaVO implements Parcelable {
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     private String descEstado;
     private Double importeOrdenacion;
     private String fecha;
@@ -12,6 +18,14 @@ public class FacturaVO implements Parcelable {
         this.descEstado = descEstado;
         this.importeOrdenacion = importeOrdenacion;
         this.fecha = fecha;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDescEstado() {

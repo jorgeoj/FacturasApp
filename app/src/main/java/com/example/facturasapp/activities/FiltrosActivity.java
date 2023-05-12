@@ -104,9 +104,6 @@ public class FiltrosActivity extends AppCompatActivity {
 
     }
 
-
-
-
     //Métodos a los que llamamos arriba -->
 
     //Cambiamos el color y el titulo de la toolbar

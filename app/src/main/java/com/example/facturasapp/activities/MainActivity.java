@@ -16,10 +16,12 @@ import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.facturasapp.Application;
 import com.example.facturasapp.R;
 import com.example.facturasapp.data.adapters.APIAdapter;
 import com.example.facturasapp.data.adapters.FacturasAdapter;
 import com.example.facturasapp.data.constantes.Constantes;
+import com.example.facturasapp.database.AppDatabase;
 import com.example.facturasapp.model.FacturaResult;
 import com.example.facturasapp.model.FacturaVO;
 import com.example.facturasapp.model.FiltrosVO;
@@ -97,7 +99,13 @@ public class MainActivity extends AppCompatActivity {
                     //El texto de abajo sale en el logcat
                     Log.d("facturas cargadas", response.body().getFacturas().toString());
                     // Obtener la lista de facturas
+
                     listaFacturas = response.body().getFacturas();
+
+                    AppDatabase database = AppDatabase.getDbInstance(Application.context);
+                    database.facturaDao().deleteAll();
+                    database.facturaDao().insert(listaFacturas);
+
                     maxImporte = calcularMaximoImporte(listaFacturas);
                     //Vinculamos el recyclerView con la lista
 
