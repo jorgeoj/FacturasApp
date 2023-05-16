@@ -34,20 +34,28 @@ import java.util.Map;
 
 public class FiltrosActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
-
     private int maxImporte;
+    private Toolbar toolbar;
+    private SeekBar seekBar;
     private TextView tvValorImporte;
+    private CheckBox cbPagadas;
+    private CheckBox cbAnuladas;
+    private CheckBox cbCuotaFija;
+    private CheckBox cbPendientesPago;
+    private CheckBox cbPlanPago;
+    private Button botonAplicar;
+    private Button botonFechaDesde;
+    private Button botonFechaHasta;
+    private Button botonEliminar;
+    private TextView tvMaxSeekBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtros);
 
-        SeekBar seekBar = findViewById(R.id.seekBar);
+        instanciarVariables();
 
         maxImporte = getIntent().getIntExtra("maxImporte", 0);
-
-        tvValorImporte = (TextView) findViewById(R.id.tvValorImporte);
 
         String datosFiltro = getIntent().getStringExtra(Constantes.FILTRO_DATOS);
         if(datosFiltro != null){
@@ -63,49 +71,32 @@ public class FiltrosActivity extends AppCompatActivity {
         //Funcionalidades del menu de la toolbar
         establecerMenuToolbar();
 
+        //Obtenemos las fechas
         obtenerFechaInicio();
         obtenerFechaFinal();
-
-        //Calculamos el valor máximo de las facturas
-
 
         //Usamos el maximo para los textview asociados a la seekbar
         //Y controlamos el movimiento en este metodo
         pintarMaxSeekbar();
 
-        //Checkbox -->
         //Inicializamos las checkbox
-        CheckBox cbPagadas = findViewById(R.id.cbPagadas);
-        CheckBox cbAnuladas = findViewById(R.id.cbAnuladas);
-        CheckBox cbCuotaFija = findViewById(R.id.cbCuotaFija);
-        CheckBox cbPendientesPago = findViewById(R.id.cbPendientesPago);
-        CheckBox cbPlanPago = findViewById(R.id.cbPlanPago);
-
-        //Boton para aplicar los filtros
-        Button botonAplicar = findViewById(R.id.buttonAplicar);
-        botonAplicar.setOnClickListener(new View.OnClickListener() {
-            Button botonFechaDesde = findViewById(R.id.fechaDesde);
-            Button botonFechaHasta = findViewById(R.id.fechaHasta);
-            @Override
-            public void onClick(View view) {
-                Gson gson = new Gson();
-                Intent intent = new Intent(FiltrosActivity.this, MainActivity.class);
-                HashMap<String, Boolean> estadosCB = new HashMap<>();
-                estadosCB.put(Constantes.PAGADAS, cbPagadas.isChecked());
-                estadosCB.put(Constantes.ANULADAS, cbAnuladas.isChecked());
-                estadosCB.put(Constantes.CUOTA_FIJA, cbCuotaFija.isChecked());
-                estadosCB.put(Constantes.PENDIENTES_PAGO, cbPendientesPago.isChecked());
-                estadosCB.put(Constantes.PLAN_PAGO, cbPlanPago.isChecked());
-                //Creamos un objeto filtro con los parametros obtenidos y lo enviamos
-                FiltrosVO filtroEnviado = new FiltrosVO(botonFechaDesde.getText().toString(), botonFechaHasta.getText().toString(), Integer.parseInt(tvValorImporte.getText().toString()), maxImporte, estadosCB);
-                //Para llevar el filtro a la otra clase
-                intent.putExtra(Constantes.FILTRO_DATOS, gson.toJson(filtroEnviado));
-                startActivity(intent);
-            }
+        botonAplicar.setOnClickListener(view -> {
+            Gson gson = new Gson();
+            Intent intent = new Intent(FiltrosActivity.this, MainActivity.class);
+            HashMap<String, Boolean> estadosCB = new HashMap<>();
+            estadosCB.put(Constantes.PAGADAS, cbPagadas.isChecked());
+            estadosCB.put(Constantes.ANULADAS, cbAnuladas.isChecked());
+            estadosCB.put(Constantes.CUOTA_FIJA, cbCuotaFija.isChecked());
+            estadosCB.put(Constantes.PENDIENTES_PAGO, cbPendientesPago.isChecked());
+            estadosCB.put(Constantes.PLAN_PAGO, cbPlanPago.isChecked());
+            //Creamos un objeto filtro con los parametros obtenidos y lo enviamos
+            FiltrosVO filtroEnviado = new FiltrosVO(botonFechaDesde.getText().toString(), botonFechaHasta.getText().toString(), Integer.parseInt(tvValorImporte.getText().toString()), maxImporte, estadosCB);
+            //Para llevar el filtro a la otra clase
+            intent.putExtra(Constantes.FILTRO_DATOS, gson.toJson(filtroEnviado));
+            startActivity(intent);
         });
 
         //Boton para eliminar los filtros
-        Button botonEliminar = findViewById(R.id.buttonEliminarFiltros);
         botonEliminar.setOnClickListener(view -> {
             //botones de fecha por defecto
             restablecerFechas();
@@ -119,25 +110,34 @@ public class FiltrosActivity extends AppCompatActivity {
 
     }
 
+    //Inicio aqui todas las variables y asi no repito codigo
+    private void instanciarVariables() {
+        seekBar = findViewById(R.id.seekBar);
+        tvValorImporte = findViewById(R.id.tvValorImporte);
+        tvMaxSeekBar = findViewById(R.id.tvMaxSeekbar);
+        botonFechaDesde = findViewById(R.id.fechaDesde);
+        botonFechaHasta = findViewById(R.id.fechaHasta);
+        cbPagadas = findViewById(R.id.cbPagadas);
+        cbAnuladas = findViewById(R.id.cbAnuladas);
+        cbCuotaFija = findViewById(R.id.cbCuotaFija);
+        cbPendientesPago = findViewById(R.id.cbPendientesPago);
+        cbPlanPago = findViewById(R.id.cbPlanPago);
+        botonAplicar = findViewById(R.id.buttonAplicar);
+        botonEliminar = findViewById(R.id.buttonEliminarFiltros);
+        toolbar = findViewById(R.id.toolbarPracticaFiltros);
+    }
+
+    //Rellenamos los datos de los filtros
     private void rellenarDatos(String datosFiltro) {
         FiltrosVO filtros = new Gson().fromJson(datosFiltro, FiltrosVO.class);
 
-        Button botonFechaDesde = findViewById(R.id.fechaDesde);
         botonFechaDesde.setText(filtros.getFechaInicio());
 
-        Button botonFechaHasta = findViewById(R.id.fechaHasta);
         botonFechaHasta.setText(filtros.getFechaFin());
 
-        SeekBar seekbar = findViewById(R.id.seekBar);
-        seekbar.setProgress(filtros.getImporteSeleccionado());
+        seekBar.setProgress(filtros.getImporteSeleccionado());
 
         tvValorImporte.setText(String.valueOf(filtros.getImporteSeleccionado()));
-
-        CheckBox chBoxPagadas = findViewById(R.id.cbPagadas);
-        CheckBox chBoxAnuladas = findViewById(R.id.cbAnuladas);
-        CheckBox chBoxCuotaFija = findViewById(R.id.cbCuotaFija);
-        CheckBox chBoxPendientesPago = findViewById(R.id.cbPendientesPago);
-        CheckBox chBoxPlanPago = findViewById(R.id.cbPlanPago);
 
         for (Map.Entry<String, Boolean> entry : filtros.getEstadoCB().entrySet()) {
             String clave = entry.getKey();
@@ -146,34 +146,31 @@ public class FiltrosActivity extends AppCompatActivity {
             // Establecer el estado del checkbox correspondiente
             switch (clave) {
                 case Constantes.PAGADAS:
-                    chBoxPagadas.setChecked(valor);
+                    cbPagadas.setChecked(valor);
                     break;
                 case Constantes.ANULADAS:
-                    chBoxAnuladas.setChecked(valor);
+                    cbAnuladas.setChecked(valor);
                     break;
                 case Constantes.CUOTA_FIJA:
-                    chBoxCuotaFija.setChecked(valor);
+                    cbCuotaFija.setChecked(valor);
                     break;
                 case Constantes.PENDIENTES_PAGO:
-                    chBoxPendientesPago.setChecked(valor);
+                    cbPendientesPago.setChecked(valor);
                     break;
                 case Constantes.PLAN_PAGO:
-                    chBoxPlanPago.setChecked(valor);
+                    cbPlanPago.setChecked(valor);
                     break;
                 default:
-                    // Manejar cualquier otra clave no esperada, si es necesario
+                    //No hacer nada
                     break;
             }
         }
 
     }
 
-    //Métodos a los que llamamos arriba -->
-
     //Cambiamos el color y el titulo de la toolbar
     private void establecerToolbar() {
         //Toolbar en blanco
-        toolbar = findViewById(R.id.toolbarPracticaFiltros);
         FiltrosActivity.this.setSupportActionBar(toolbar);
 
         //Cambiar toolbar titulo
@@ -205,7 +202,6 @@ public class FiltrosActivity extends AppCompatActivity {
 
     private void obtenerFechaInicio() {
         //Boton para fecha desde, inicializar y al hacer click salga el calendario
-        Button botonFechaDesde = findViewById(R.id.fechaDesde);
         botonFechaDesde.setOnClickListener(view -> {
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
@@ -220,7 +216,6 @@ public class FiltrosActivity extends AppCompatActivity {
 
     private String obtenerFechaFinal() {
         //Boton fecha hasta, inicializar y al hacer click salga el calendario
-        Button botonFechaHasta = findViewById(R.id.fechaHasta);
         botonFechaHasta.setOnClickListener(view -> {
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
@@ -235,11 +230,8 @@ public class FiltrosActivity extends AppCompatActivity {
     }
 
     private void pintarMaxSeekbar() {
-        //Seekbar y textos de la seekbar, inicializar y onClick
-        SeekBar seekBar = findViewById(R.id.seekBar);
-        TextView tvMaxSeekBar = (TextView) findViewById(R.id.tvMaxSeekbar);
-        TextView tvValorImporte = (TextView) findViewById(R.id.tvValorImporte);
 
+        //Seekbar y textos de la seekbar, inicializar y onClick
         seekBar.setMax(maxImporte);
         tvMaxSeekBar.setText(String.valueOf(maxImporte));
 
@@ -266,32 +258,22 @@ public class FiltrosActivity extends AppCompatActivity {
 
     private void restablecerFechas() {
         // Restablecer valores de fecha
-        Button fechaDesde = findViewById(R.id.fechaDesde);
-        fechaDesde.setText(R.string.activity_filtros_button_date);
-        Button fechaHasta = findViewById(R.id.fechaHasta);
-        fechaHasta.setText(R.string.activity_filtros_button_date);
+        botonFechaDesde.setText(R.string.activity_filtros_button_date);
+        botonFechaHasta.setText(R.string.activity_filtros_button_date);
     }
 
     private void restablecerSeekbar(int maxImporte) {
-        SeekBar seekBar = findViewById(R.id.seekBar);
-
         //Poner la seekbar al valor maximo de las facturas como predeterminado
         seekBar.setProgress(maxImporte);
     }
 
     private void restablecerCheckBox() {
-        CheckBox chBoxPagadas = findViewById(R.id.cbPagadas);
-        CheckBox chBoxAnuladas = findViewById(R.id.cbAnuladas);
-        CheckBox chBoxCuotaFija = findViewById(R.id.cbCuotaFija);
-        CheckBox chBoxPendientesPago = findViewById(R.id.cbPendientesPago);
-        CheckBox chBoxPlanPago = findViewById(R.id.cbPlanPago);
-
         //Quitar el check a las checkbox
-        chBoxPagadas.setChecked(false);
-        chBoxAnuladas.setChecked(false);
-        chBoxCuotaFija.setChecked(false);
-        chBoxPendientesPago.setChecked(false);
-        chBoxPlanPago.setChecked(false);
+        cbPagadas.setChecked(false);
+        cbAnuladas.setChecked(false);
+        cbCuotaFija.setChecked(false);
+        cbPendientesPago.setChecked(false);
+        cbPlanPago.setChecked(false);
     }
 
 }

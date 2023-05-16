@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //Aqui hacemos la peticion de las facturas
     public void peticionFacturas() {
         Call<FacturaResult> call = APIAdapter.getService().getList();
         call.enqueue(new Callback<FacturaResult>() {
