@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
     private List<FacturaVO> listaFacturas;
 
+    private FiltrosVO filtros;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,9 +86,16 @@ public class MainActivity extends AppCompatActivity {
         peticionFacturas();
     }
 
+    //Cambiamos entre actividades
     public void cambiarActividad() {
         Intent intent = new Intent(MainActivity.this, FiltrosActivity.class);
         intent.putExtra("maxImporte", maxImporte);
+
+        if (filtros != null) {
+            Gson gson = new Gson();
+            intent.putExtra(Constantes.FILTRO_DATOS, gson.toJson(filtros));
+        }
+
         startActivity(intent);
     }
 
@@ -130,11 +139,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private List<FacturaVO> llenarDatos(String datosFiltro) {
-        FiltrosVO filtros = new Gson().fromJson(datosFiltro, FiltrosVO.class);
+        filtros = new Gson().fromJson(datosFiltro, FiltrosVO.class);
         List<FacturaVO> filtroLista;
 
         //Comprobamos si hay que filtrar la seekbar y hacemos los cambios
-        filtroLista =  comprobarSeekBar(filtros.getMaxImporte());
+        filtroLista =  comprobarSeekBar(filtros.getImporteSeleccionado());
         //Vemos si hay que filtrar las fechas y las filtramos
         if(!filtros.getFechaInicio().equals(getBaseContext().getResources().getString(R.string.activity_filtros_button_date))  ||
                 !filtros.getFechaFin().equals(getBaseContext().getResources().getString(R.string.activity_filtros_button_date))) {
@@ -150,10 +159,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        //Si entra por aquí es porque hay alguna checkbox marcada
         if (hayBooleanoTrue) {
             filtroLista = comprobarCheckBox(filtros.getEstadoCB(), filtroLista);
         }
 
+        //En caso de que no haya facturas por el filtro, mostraremos mensaje de que no hay facturas
         if(filtroLista.isEmpty()){
             tvNoDatos.setVisibility(View.VISIBLE);
         }
@@ -196,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
         return listaAux;
     }
 
+    //Miramos como ha movido la barra el usuario en los filtros y devolvemos la lista filtrada por la barra
     private List<FacturaVO> comprobarSeekBar(int maxImporte) {
 
         List<FacturaVO> listaAux = new ArrayList<>();
@@ -223,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
         return listaAux;
     }
 
+    //Calculamos el máximo importe de las facturas
     private int calcularMaximoImporte(List<FacturaVO> listaFactura) {
         int importeMax = 0;
 
