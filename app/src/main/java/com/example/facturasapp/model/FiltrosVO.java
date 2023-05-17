@@ -26,40 +26,16 @@ public class FiltrosVO {
         return fechaInicio;
     }
 
-    public void setFechaInicio(String fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-
     public String getFechaFin() {
         return fechaFin;
-    }
-
-    public void setFechaFin(String fechaFin) {
-        this.fechaFin = fechaFin;
     }
 
     public int getImporteSeleccionado() {
         return importeSeleccionado;
     }
 
-    public void setImporteSeleccionado(int importeSeleccionado) {
-        this.importeSeleccionado = importeSeleccionado;
-    }
-
-    public int getMaxImporte() {
-        return maxImporte;
-    }
-
-    public void setMaxImporte(int maxImporte) {
-        this.maxImporte = maxImporte;
-    }
-
     public Map<String, Boolean> getEstadoCB() {
         return estadoCB;
-    }
-
-    public void setEstadoCB(Map<String, Boolean> estadoCB) {
-        this.estadoCB = estadoCB;
     }
 }
 

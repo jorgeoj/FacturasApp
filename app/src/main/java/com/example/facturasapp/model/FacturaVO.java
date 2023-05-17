@@ -7,7 +7,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "factura")
-public class FacturaVO implements Parcelable {
+public class FacturaVO {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String descEstado;
@@ -40,35 +40,5 @@ public class FacturaVO implements Parcelable {
         return fecha;
     }
 
-    // Implementa los métodos Parcelable
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.descEstado);
-        dest.writeDouble(this.importeOrdenacion);
-        dest.writeString(this.fecha);
-    }
-
-    protected FacturaVO(Parcel in) {
-        this.descEstado = in.readString();
-        this.importeOrdenacion = in.readDouble();
-        this.fecha = in.readString();
-    }
-
-    public static final Creator<FacturaVO> CREATOR = new Creator<FacturaVO>() {
-        @Override
-        public FacturaVO createFromParcel(Parcel source) {
-            return new FacturaVO(source);
-        }
-
-        @Override
-        public FacturaVO[] newArray(int size) {
-            return new FacturaVO[size];
-        }
-    };
 }
 
