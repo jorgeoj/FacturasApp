@@ -190,8 +190,7 @@ public class FiltrosActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if(menuItem.getItemId() == R.id.vuelta){
-                    Intent intent = new Intent(FiltrosActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    finish();
                     return true;
                 }else{
                     return false;
